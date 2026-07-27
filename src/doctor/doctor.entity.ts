@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { RecurringAvailability } from '../recurring-availability/entities/recurring-availability.entity';
+import { CustomAvailability } from '../custom-availability/entities/custom-availability.entity';
 
 @Entity('doctors')
 export class Doctor {
@@ -40,4 +43,15 @@ export class Doctor {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+  @OneToMany(
+  () => RecurringAvailability,
+  (availability) => availability.doctor,
+)
+recurringAvailabilities!: RecurringAvailability[];
+
+@OneToMany(
+  () => CustomAvailability,
+  (availability) => availability.doctor,
+)
+customAvailabilities!: CustomAvailability[];
 }
